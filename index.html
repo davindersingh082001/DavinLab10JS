@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>Davin Lab 10 || Web Animation API</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="css/normalize.css" rel="stylesheet" />
+	<link href="css/styles.css" rel="stylesheet" />
+	<script src="animation.js" defer></script>
+</head>
+
+<body>
+	<!--CREATING HEADER and a SECTION element -->
+
+	<header>
+
+	</header>
+	<!-- putting three button for animations-->
+	<h1>Web Animation API</h1>
+	<button type="button" id="playanimation">Play</button>
+	<button type="button" id="pauseanimation">Pause</button>
+	<button type="button" id="moreanimation">Click For Weird animation</button>
+	<section>
+
+
+	</section>
+	<footer>
+
+	</footer>
+	<script>
+		// SELECTING HEADER and the SECTION elements USING VARIABLES 
+		let header = document.querySelector('header');
+		let section = document.querySelector('section');
+
+		// Storing JSON URL using a variable
+
+		let jsonURL = 'https://davindersingh082001.github.io/JsLab8Json/products.json';
+
+		//Creating a new XHR object 
+		let requestedURL = new XMLHttpRequest();
+
+		// opening a requestedUrl using the open method of XHR object 
+		requestedURL.open('GET', jsonURL);
+
+		//setting up the response type 
+
+		requestedURL.responseType = 'json';
+
+		//sending the request 
+		requestedURL.send();
+
+		//setting up an event handler to listen for onload
+		requestedURL.onload = function () {
+			let responseReceived = requestedURL.response;
+			console.log(responseReceived);
+			headerContent(responseReceived);
+			topDeals(responseReceived);
+		}
+
+		function headerContent(jsonObj) {
+			let heading1 = document.createElement('h1');
+			heading1.textContent = jsonObj['companyName'];
+			header.appendChild(heading1);
+			let para = document.createElement('p');
+			para.textContent = jsonObj['headOffice'];
+			header.appendChild(para);
+		}
+
+		function topDeals(jsonObj) {
+			let topDeals = jsonObj['topDeals'];
+			for (let i = 0; i < topDeals.length; i++) {
+				let article = document.createElement('article');
+				let heading2 = document.createElement('h2');
+				let image = document.createElement('img');
+				let para1 = document.createElement('p');
+				let para2 = document.createElement('p');
+				let list = document.createElement('ul');
+
+				image.setAttribute('src', 'images/' + topDeals[i].image);
+				image.setAttribute('alt', topDeals[i].name);
+				heading2.textContent = topDeals[i].name;
+				para1.textContent = topDeals[i].price;
+				para2.textContent = topDeals[i].description;
+
+				let features = topDeals[i].features;
+				for (let j = 0; j < features.length; j++) {
+					let items = document.createElement('li');
+					items.textContent = features[j];
+					list.appendChild(items);
+				}
+
+				article.appendChild(image);
+				article.appendChild(heading2);
+				article.appendChild(para1);
+				article.appendChild(para2);
+				article.appendChild(list);
+				section.appendChild(article);
+			}
+		}
+	</script>
+</body>
+
+</html>
